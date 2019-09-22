@@ -36,6 +36,32 @@ app.post('/CreateUnidade', function(req, res){
 
 });
 
+app.post('/CreateLeito', function(req, res){
+    
+    //define caminho do banco
+    var uri = "mongodb+srv://usuario:usuario@mongodbblackbook-zdqhv.azure.mongodb.net/test?retryWrites=true&w=majority"
+
+    //cria conexao com o banco de dados
+    MongoClient.connect(uri,{ useNewUrlParser: true }, function(err,client){const collection = client.db("test").collection("Leito");
+    console.log("connected");
+
+    //Define os dados que serao inseridos no banco
+    var ins={NomeLeito: req.body.nomeLeito, codigoPaciente: req.body.codigoPaciente, codigoUnidade: req.body.codigoUnidade, NomePaciente: req.body.nomePaciente};
+
+    //CREATE
+    collection.insertOne(ins, function(err,res){
+      console.log("data inserted");
+    })
+
+    client.close();
+    })
+
+    res.send({
+        passed: true,
+    });
+
+});
+
 app.get('/checkname/:name', function(req, res){
 
     if(req.params.name.toLowerCase() === 'homer'){
